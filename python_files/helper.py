@@ -2,10 +2,30 @@ from pprint import pprint #remove this before commit
 import re
 
 
+def convert_str_to_int(string):
+    m = re.match('(?P<match>.*)[\.]', string)
+    if m:
+        # This is some ugly washing of str -> float -> int via regex.
+        quantity = m.group('match')
+    else:
+        quantity = string
+
+    try:
+      quantity = int(quantity)
+    except Exception as e:
+      pass
+
+    return quantity
+
 def print_metadata(metadata):
     if not metadata:
         return
-    print("Metadata!")
+
+    # Print header
+    print("Metadata:")
+
+    for key in metadata:
+        print(f'    {key}: {metadata[key]}')
 
 def print_ingredients(ingredients):
     if not ingredients:
@@ -18,7 +38,8 @@ def print_ingredients(ingredients):
     max_len_name = max([len(item['name']) for item in ingredients])
     for item in ingredients:
         if item['type'] == 'ingredient':
-            print(f'    {item["name"].ljust(max_len_name, " ")}    {item["quantity"]} {item["units"]}')
+            quantity = convert_str_to_int(item['quantity'])
+            print(f'    {item["name"].ljust(max_len_name, " ")}    {quantity} {item["units"]}')
         else:
             # This is unexpected. Log this occurance!
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -38,13 +59,13 @@ def print_steps(steps):
         timer = []
 
         for sub_step in step:
-            #if index == 5:
-             # import pdb; pdb.set_trace()
             match sub_step['type']:
                 case 'text':
                     text.append(sub_step['value'])
                 case 'cookware':
-                    text.append(sub_step['name'])
+                    # Strip trailing commas since the followign type of writing is to be expected
+                    # "mix [...] with a #blender, allow to settle"
+                    text.append(sub_step['name'].strip(','))
                     quantity = sub_step.get("quantity", None)
                     if quantity:
                         cookware.append(f'{sub_step["name"]}: {quantity}')
@@ -52,15 +73,11 @@ def print_steps(steps):
                         cookware.append(sub_step["name"])
                 case 'ingredient':
                     text.append(sub_step['name'])
-                    ingredient.append(f'{sub_step["name"]}: {sub_step["quantity"]} {sub_step["units"]}')
+                    quantity = convert_str_to_int(sub_step['quantity'])
+                    ingredient.append(f'{sub_step["name"]}: {quantity} {sub_step["units"]}')
                 case 'timer':
-                    m = re.match('(?P<match>.*)[\.]', sub_step['quantity'])
-                    if m:
-                        # This is some ugly washing of str -> float -> int via regex.
-                        quantity = m.group('match')
-                    else:
-                        quantity = sub_step['quantity']
-                    time = time + int(quantity)
+                    quantity = convert_str_to_int(sub_step['quantity'])
+                    time = time + quantity
                     text.append(f'{quantity} {sub_step["units"]}')
                     timer.append((quantity, sub_step['units']))
 
