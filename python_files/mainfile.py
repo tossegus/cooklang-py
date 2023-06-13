@@ -2,7 +2,8 @@
 
 from cooklang import *
 import sys
-from helper import print_recipe
+from helper import print_recipe, get_ingredients, ShoppingList
+
 
 def print_help():
     print('Usage: mainfile.py [seed|recipe|shopping-list|server] <options>')
@@ -11,7 +12,6 @@ def print_help():
     print('shopping-list: <file1.cook> <file2.cook> ...')
     print('server does not need any arguments')
     print()
-
 
 
 if __name__ == "__main__":
@@ -67,10 +67,16 @@ if __name__ == "__main__":
             print("Shopping list printing")
             recipe_paths = []
             index = 2
-            while sys.argv[index]:
+            while index < len(sys.argv):
                 recipe_paths.append(sys.argv[index])
                 index = index + 1
             print(f'Got {index-2} recipes!')
+            ingredients = []
+            shopping_list = ShoppingList()
+            for path in recipe_paths:
+                recipe = parseRecipe(path)
+                shopping_list.add_recipe(recipe)
+            print(shopping_list)
         case 'server':
             '''
             server:
