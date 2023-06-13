@@ -23,7 +23,7 @@ if __name__ == "__main__":
     if  len(sys.argv) < 3 and command != 'server':
         print('Too few arguments')
         early_exit = True
-        
+
     if early_exit:
         print()
         print_help()
@@ -53,6 +53,7 @@ if __name__ == "__main__":
             match sub_cmd:
                 case 'read':
                     # Handle read
+                    # There is problems with using % to define units in metadata. So don't do that!
                     recipe = parseRecipe(sys.argv[3])
                     print_recipe(recipe)
                 case _:
