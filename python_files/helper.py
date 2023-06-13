@@ -65,16 +65,16 @@ def print_steps(steps):
                 case 'cookware':
                     # Strip trailing commas since the followign type of writing is to be expected
                     # "mix [...] with a #blender, allow to settle"
-                    text.append(sub_step['name'].strip(','))
+                    text.append(sub_step['name'])
                     quantity = sub_step.get("quantity", None)
                     if quantity:
-                        cookware.append(f'{sub_step["name"]}: {quantity}')
+                        cookware.append(f'{sub_step["name"].strip(",")}: {quantity}')
                     else:
-                        cookware.append(sub_step["name"])
+                        cookware.append(sub_step["name"].strip(","))
                 case 'ingredient':
                     text.append(sub_step['name'])
                     quantity = convert_str_to_int(sub_step['quantity'])
-                    ingredient.append(f'{sub_step["name"]}: {quantity} {sub_step["units"]}')
+                    ingredient.append(f'{sub_step["name"].strip(",")}: {quantity} {sub_step["units"]}')
                 case 'timer':
                     quantity = convert_str_to_int(sub_step['quantity'])
                     time = time + quantity
