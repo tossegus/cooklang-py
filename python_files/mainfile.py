@@ -2,8 +2,9 @@
 
 from cooklang import *
 import sys
-from helper import get_ingredients, ShoppingList
+from helper import get_ingredients
 from recipe import Recipe
+from shoppinglist import ShoppingList
 
 
 def print_help():
