@@ -90,5 +90,6 @@ if __name__ == "__main__":
             server:
                 Start a webserver. Find out if you want to use FLASK or if there exists something better.
             '''
+            print("Server!")
             server = Server(path)
             server.start()

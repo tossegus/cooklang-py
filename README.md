@@ -10,7 +10,11 @@ Cook-in-c is a Cooklang language parser written in C. It features a Python3 C ex
 
 ## Dependencies:
 
-This project uses match/case which needs python3.10-dev and python3.10-distutils
+The following programs are needed:
+* python3.10-dev
+* python3.10-devutils
+* pip for pytho3.10
+* python3.10 -m pip install django
 
 ## Install:
 
