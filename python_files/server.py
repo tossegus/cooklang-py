@@ -1,18 +1,26 @@
 from recipe_tree import RecipeTree
 from shoppinglist import ShoppingList
+import subprocess, os
 
 class Server():
   def __init__(self, path):
       # Create a recipe tree and shopping list at the start.
       self.recipe_tree = RecipeTree(path)
       self.shopping_list = ShoppingList()
-			self.recipes_in_list = []
+      self.recipes_in_list = []
 
   def start(self):
 			## DESIGN
 			# Two menu items in the top: "Recipes" and "Shopping list"
 			# Below, the currently selected page is visible.
 			# The starting page is Recipes.
+			path = os.getcwd()
+			if os.path.exists(path + os.sep + 'mywebsite'):
+				import pdb; pdb.set_trace()
+				# website exists
+				# Now we want to start it from here.
+				command = 'python mywebsite/manage.py runserver'
+				subprocess.call(command, shell=True)
 
 			## IMPLEMENTATION DETAILS
       # Should this run in a seperate thread?

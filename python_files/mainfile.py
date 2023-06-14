@@ -6,6 +6,7 @@ from helper import get_ingredients
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from recipe_tree import RecipeTree
+from server import Server
 
 def print_help():
     print('Usage: mainfile.py [seed|recipe|shopping-list|server] <options>')
