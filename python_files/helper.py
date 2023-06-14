@@ -1,8 +1,9 @@
 from pprint import pprint #remove this before commit
-import re, math
+import re, math, os
 from collections import namedtuple
 
 Ingredient = namedtuple("Ingredient", "quantity unit")
+RecipeFile = namedtuple('RecipeFile', 'file path')
 
 def convert_str_to_int(string):
     m = re.match('(?P<match>.*)[\.]', string)
@@ -97,6 +98,7 @@ def combine_units(units, form):
   else:
     return f'{units} {form}'
 
+
 # This one should be put into the ShoppingList class
 def merge_ingredients(ingredients_list):
     for item in ingredients_list:
@@ -128,22 +130,6 @@ def get_ingredients(recipe):
                 ingredients[item['name']].append((quantity, item['units']))
 
     return merge_ingredients(ingredients)
-
-
-class RecipeTree():
-  def find_recipes():
-    # Do a tree walk and list all .cook files and what folders they are located in.
-    # This should perhaps be turned into a structure of some sort, so that it is
-    # easy to take a look at it in the webbrowser?
-    print("Hej")
-
-  def __repr__(self):
-    # Print the tree
-    print("Hej")
-
-  def _populate_tree(self):
-    # Populate items in this class
-    print("Hej")
 
 
 class CookCLI():

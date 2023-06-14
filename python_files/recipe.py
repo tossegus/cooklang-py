@@ -19,9 +19,9 @@ class Recipe():
         if tmp_str != "":
             string = string + tmp_str + "\n"
         return string
-    
+
     def __repr__(self):
-        print(self.__str__)
+        return self.__str__
 
     def get_metadata_str(self):
         if not self.metadata:

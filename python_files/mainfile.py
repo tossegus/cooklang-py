@@ -1,11 +1,11 @@
 #!C:\Users\Gustaf\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\python.exe
 
 from cooklang import *
-import sys
+import sys, os
 from helper import get_ingredients
 from recipe import Recipe
 from shoppinglist import ShoppingList
-
+from recipe_tree import RecipeTree
 
 def print_help():
     print('Usage: mainfile.py [seed|recipe|shopping-list|server] <options>')
@@ -22,20 +22,23 @@ if __name__ == "__main__":
     if command not in ['seed', 'recipe', 'shopping-list', 'server']:
         print(f'Command "{command}" not found.')
         early_exit = True
-    if  len(sys.argv) < 3 and command != 'server':
+    if  len(sys.argv) < 3 and command != 'server' and command != 'seed':
         print('Too few arguments')
         early_exit = True
-
     if early_exit:
         print()
         print_help()
         exit(-1)
 
+    # Path to this directory
+    path = os.getcwd()
+
     match command:
         case 'seed':
             # seed: populate the RecipeTree($PWD)'''
-            print("Seed!")
-            path = sys.argv[2]
+            # DONE
+            tree = RecipeTree(path)
+            print(tree)
         case 'recipe':
             '''
             recipe <cmd>,
@@ -59,6 +62,7 @@ if __name__ == "__main__":
                     # Handle read
                     # There is problems with using % to define units in metadata. So don't do that!
                     print(recipe)
+                    # DONE
                 case _:
                     print("Everything except read")
         case 'shopping-list':
@@ -67,6 +71,7 @@ if __name__ == "__main__":
             Loops through the ingredients in the recipes and adds them to a shopping list
             Then prints how many of each item, and in what section
             '''
+            # DONE
             print("Shopping list printing")
             recipe_paths = []
             index = 2
@@ -86,6 +91,3 @@ if __name__ == "__main__":
                 Start a webserver. Find out if you want to use FLASK or if there exists something better.
             '''
             print("This is gonna be a tricky one. Starting server!")
-    
-    # Handle argparse here, and create basic structure
-    # Use library files for read, shoppingcart etc for recipe. That should be linked to the recipe
