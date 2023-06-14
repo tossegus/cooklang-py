@@ -3,20 +3,32 @@ from shoppinglist import ShoppingList
 
 class Server():
   def __init__(self, path):
-      # Only the 
+      # Create a recipe tree and shopping list at the start.
       self.recipe_tree = RecipeTree(path)
       self.shopping_list = ShoppingList()
+			self.recipes_in_list = []
 
   def start(self):
-      # Run everything from here
-      # Populate web page
+			## DESIGN
+			# Two menu items in the top: "Recipes" and "Shopping list"
+			# Below, the currently selected page is visible.
+			# The starting page is Recipes.
+
+			## IMPLEMENTATION DETAILS
       # Should this run in a seperate thread?
-      # > Main page should be the seed-view
-      # > From main page:
-      #   Click recipes to load them
-      # > From recipe page:
-      #   * Scrollable
-      #   * Option to add to shopping list
+			# All pages shall be scrollable.
+			# * Recipe page:
+      #   1. Clicking a recipe should load that recipe and display it
+			#   2. Clicking a folder should collapse it, 
+			#      hiding recipes located beneath
+			#		3. There should be a button "Add to shopping list" on the
+			#       recipe page
+			# * Shopping list page:
+			#   1. The recipes in the shopping list should be added to the top.
+			#      Should it be possible to remove them? I guess so.
+			#      That should just remove them from the class list of recipes
+			#   2. All items from currently added recipes should be displayed
+			#      when we enter this page
       
   def add_to_shopping_list(self, path):
       # Load recipe
