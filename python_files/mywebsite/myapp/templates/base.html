@@ -3,10 +3,20 @@
 <head>
     <title>My Website</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .menu-wrapper {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: teal;
+            z-index: 100;
+        }
         .menu-option {
             flex: 1;
             text-align: center;
-            background-color: teal;
             border-right: 1px solid white;
         }
         .menu-option:last-child {
@@ -18,24 +28,42 @@
             color: white;
             text-decoration: none;
         }
+        .content {
+            margin-top: 50px;
+            /* Adjust the margin-top value based on the height of your menu */
+        }
+        .recipe-header {
+            background-color: teal;
+        }
+        .recipe-content {
+        }
+        .recipe-item {
+            background-color: lightblue;
+            border-top: 1px solid white;
+            margin-left: 2%;
+        }
+ 
+
     </style>
 </head>
 <body>
     <header>
-        <nav style="display: flex;">
-            <div class="menu-option">
-                <a href="/">Home</a>
-            </div>
-            <div class="menu-option">
-                <a href="/recipes/">Recipes</a>
-            </div>
-            <div class="menu-option">
-                <a href="/shopping-list/">Shopping List</a>
-            </div>
-        </nav>
+        <div class="menu-wrapper">
+            <nav style="display: flex;">
+                <div class="menu-option">
+                    <a href="/">Home</a>
+                </div>
+                <div class="menu-option">
+                    <a href="/seed/">Recipes</a>
+                </div>
+                <div class="menu-option">
+                    <a href="/shopping-list/">Shopping List</a>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <main>
+    <main class="content">
         {% block content %}
         {% endblock %}
     </main>

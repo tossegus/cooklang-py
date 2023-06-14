@@ -56,7 +56,7 @@ if __name__ == "__main__":
                 exit(-1)
             sub_cmd = sys.argv[2]
 
-            recipe = Recipe(parseRecipe(sys.argv[3]))
+            recipe = Recipe(sys.argv[3])
             
             match sub_cmd:
                 case 'read':

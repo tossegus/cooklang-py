@@ -56,9 +56,9 @@ class RecipeTree():
 
   def add_file(self, path, file):
       if file not in self.tree:
-          self._tree['FLAT'] = [RecipeFile(file, path)]
+          self._tree['FLAT'] = [RecipeFile(file, path + os.sep + file)]
       else:
-          self._tree['FLAT'].append(RecipeFile(file, path))
+          self._tree['FLAT'].append(RecipeFile(file, path + os.sep + file))
 
   def add_file_to_dir(self, path, folder, file):
       if file.endswith('cook'):
@@ -66,6 +66,6 @@ class RecipeTree():
               self._tree[folder] = [file]
           else:
               if not self.tree[folder]:
-                  self._tree[folder] = [RecipeFile(file, path)]
+                  self._tree[folder] = [RecipeFile(file, path + os.sep + file)]
               else:
-                  self._tree[folder].append(RecipeFile(file, path))
+                  self._tree[folder].append(RecipeFile(file, path + os.sep + file))
