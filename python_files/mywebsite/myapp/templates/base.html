@@ -2,15 +2,36 @@
 <html>
 <head>
     <title>My Website</title>
+    <style>
+        .menu-option {
+            flex: 1;
+            text-align: center;
+            background-color: teal;
+            border-right: 1px solid white;
+        }
+        .menu-option:last-child {
+            border-right: none;
+        }
+        .menu-option a {
+            display: block;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/recipes/">Recipes</a></li>
-                <li><a href="/shopping-list/">Shopping List</a></li>
-            </ul>
+        <nav style="display: flex;">
+            <div class="menu-option">
+                <a href="/">Home</a>
+            </div>
+            <div class="menu-option">
+                <a href="/recipes/">Recipes</a>
+            </div>
+            <div class="menu-option">
+                <a href="/shopping-list/">Shopping List</a>
+            </div>
         </nav>
     </header>
 

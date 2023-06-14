@@ -2,5 +2,9 @@
 
 {% block content %}
 <h1>Recipes</h1>
-<!-- Add your recipe content here -->
+<ul>
+    {% for recipe in recipes_list %}
+    <li>{{ recipe }}</li>
+    {% endfor %}
+</ul>
 {% endblock %}

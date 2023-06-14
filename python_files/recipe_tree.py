@@ -3,7 +3,7 @@ import os
 
 class RecipeTree():
   def __init__(self, path):
-    self.tree = {}
+    self._tree = {}
     if not os.path.exists(path + os.sep + 'recipes'):
         print("Can not find recipes folder")
         return
@@ -24,6 +24,11 @@ class RecipeTree():
                         self.add_file(node[0], file)
                     else:
                         self.add_file_to_dir(node[0], folder, file)
+
+  @property
+  def tree(self):
+    return self._tree
+
   def __str__(self):
     string = "Recipes:\n"
     for folder in self.tree:
@@ -47,20 +52,20 @@ class RecipeTree():
   def add_directory(self, folder):
       if folder:
           if folder not in self.tree:
-              self.tree[folder] = []
+              self._tree[folder] = []
 
   def add_file(self, path, file):
       if file not in self.tree:
-          self.tree['FLAT'] = [RecipeFile(file, path)]
+          self._tree['FLAT'] = [RecipeFile(file, path)]
       else:
-          self.tree['FLAT'].append(RecipeFile(file, path))
+          self._tree['FLAT'].append(RecipeFile(file, path))
 
   def add_file_to_dir(self, path, folder, file):
       if file.endswith('cook'):
           if folder not in self.tree:
-              self.tree[folder] = [file]
+              self._tree[folder] = [file]
           else:
               if not self.tree[folder]:
-                  self.tree[folder] = [RecipeFile(file, path)]
+                  self._tree[folder] = [RecipeFile(file, path)]
               else:
-                  self.tree[folder].append(RecipeFile(file, path))
+                  self._tree[folder].append(RecipeFile(file, path))
