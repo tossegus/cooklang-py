@@ -72,7 +72,6 @@ if __name__ == "__main__":
             Then prints how many of each item, and in what section
             '''
             # DONE
-            print("Shopping list printing")
             recipe_paths = []
             index = 2
             while index < len(sys.argv):

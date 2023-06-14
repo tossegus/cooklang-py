@@ -17,7 +17,6 @@ class ShoppingList():
         print(self.__str__)
 
     def add_recipe(self, recipe):
-        print("Adding recipe to shopping list")
         self.fill_ingredients(recipe)
 
     def add_ingredient(self, item, quantity, unit):
@@ -37,9 +36,4 @@ class ShoppingList():
             if item['type'] == 'ingredient':
                 quantity = convert_str_to_int(item['quantity'])
                 self.add_ingredient(item['name'], quantity, item['units'])
-
-    def compact_shopping_list(self):
-        # Go through all elements and put them in more reasonable units.
-        # i.e. 1250 ml to 1l, 2dl, 3tbsp, 1tsp
-        print("tmptmp")
 
