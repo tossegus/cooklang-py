@@ -2,7 +2,8 @@
 
 from cooklang import *
 import sys
-from helper import print_recipe, get_ingredients, ShoppingList
+from helper import get_ingredients, ShoppingList
+from recipe import Recipe
 
 
 def print_help():
@@ -49,13 +50,14 @@ if __name__ == "__main__":
                 print_help()
                 exit(-1)
             sub_cmd = sys.argv[2]
+
+            recipe = Recipe(parseRecipe(sys.argv[3]))
             
             match sub_cmd:
                 case 'read':
                     # Handle read
                     # There is problems with using % to define units in metadata. So don't do that!
-                    recipe = parseRecipe(sys.argv[3])
-                    print_recipe(recipe)
+                    print(recipe)
                 case _:
                     print("Everything except read")
         case 'shopping-list':
