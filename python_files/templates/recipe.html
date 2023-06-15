@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 <head>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function compareVariable() {
+    var inputValue = document.getElementById("my_input").value;
+    
+    if (inputValue === "TAB") {
+        alert("Variable is equal to 'TAB'");
+    } else {
+        alert("Variable is not equal to 'TAB'");
+    }
+  }
+</script>
 </head>
 
 {% block content %}
@@ -24,9 +35,15 @@
 {% endfor %}
 </div>
 
-</br></br>
 <h3>Steps</h3>
-<div>{{steps}}</div>
+{% for item, key in steps.items() %}
+  {% if key == "TAB" %}
+    <div class='metadata-step'>{{ item }} </div>
+  {% else %}
+    <div class='recipe-step'>{{ item }}</div>
+  {% endif %}
+{% endfor %}
+
 {% endblock %}
 
 

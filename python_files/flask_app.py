@@ -3,7 +3,7 @@ from server import Server
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from cooklang import parseRecipe
-import os
+import os, re
 
 server_item = None
 shopping_list = []
@@ -89,11 +89,23 @@ def recipe():
     for item in recipe.ingredients:
       ingredients.append(f'{item["name"]} {item["quantity"]}{item["units"]}')
 
+    step_list = recipe.steps_str.split('\n')
+    step_dict = {}
+    for item in step_list:
+      m = re.search('[^\ ]', item)
+      if m:
+        index = m.start()
+      else:
+        index = 0
+      # Strip leading white spaces
+      key = item[index:]
+      step_dict[key] = "TAB" if key.startswith('[') else "BASE"
+
     return render_template('recipe.html',
                            path=path, 
                            metadata=recipe.metadata, 
                            ingredients=ingredients, 
-                           steps=recipe.steps)
+                           steps=step_dict)
 
 
 def main(path):
