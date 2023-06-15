@@ -38,7 +38,7 @@ def shoppinglist():
 
     if request.method == 'POST':
       print('Handle post')
-      url = request.form.get('remove_from_list')
+      url = request.form.get('button')
       if url in shopping_list:
         shopping_list.remove(url)
      
@@ -55,16 +55,20 @@ def shoppinglist():
       print("List is not empty")
     return render_template('shopping_list.html', recipes=int_dict)
 
-@app.route('/printshoppinglist/')
+@app.route('/printshoppinglist/', methods=["POST", "GET"])
 def printshoppinglist():
     global shopping_list
     shoppinglist = ShoppingList()
-    for item in shopping_list:
-        shoppinglist.add_recipe(parseRecipe(item))
-
     int_dict = {}
-    for item in shoppinglist.items:
-      int_dict[item] = f'{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}'
+    if request.method == 'POST':
+      if request.form.get('button') == 'empty_list':
+        shopping_list = []
+    else:
+      for item in shopping_list:
+          shoppinglist.add_recipe(parseRecipe(item))
+
+      for item in shoppinglist.items:
+        int_dict[item] = f'{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}'
 
     return render_template('print_shopping_list.html', shoppinglist=int_dict)
 

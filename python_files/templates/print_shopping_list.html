@@ -6,5 +6,8 @@
 {% for item, key in shoppinglist.items() %}
   <li>{{item}}:  {{key}} </li>
 {% endfor %}
+<form action="" method="POST">
+  <button name="button" value="empty_list">Clear list</button>
+</form>
 {% endblock %}
 
