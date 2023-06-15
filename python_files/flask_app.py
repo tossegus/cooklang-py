@@ -1,8 +1,19 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from server import Server
+from recipe import Recipe
+from shoppinglist import ShoppingList
+from cooklang import parseRecipe
 
 server_item = None
+shopping_list = []
 app = Flask(__name__)
+
+def add_to_shoppinglist(path):
+    global shopping_list
+    if path not in shopping_list:
+      print("Added to list")
+      # Only add each recipe once.
+      shopping_list.append(path)
 
 @app.route('/')
 def home():
@@ -20,23 +31,44 @@ def seed():
 
 @app.route('/shoppinglist/')
 def shoppinglist():
-    global server_item
+    shoppinglist = ShoppingList()
+    global server_item, shopping_list
     if not server_item:
         server_item = Server(os.getcwd())
-    shoppinglist="Hej"
-    return render_template('shopping_list.html', shoppinglist=shoppinglist)
+    if not shopping_list:
+      # The shopping_list is empty
+      print("Empty list")
+    else:
+      print("List is not empty")
+      for item in shopping_list:
+        shoppinglist.add_recipe(parseRecipe(item))
 
-@app.route('/recipe/')
+    shoppinglist.add_recipe(parseRecipe('/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Buckwheat noodles with fried tofu.cook'))
+    int_dict = {}
+    for item in shoppinglist.items:
+      int_dict[item] = f'{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}'
+    return render_template('shopping_list.html', shoppinglist=int_dict)
+
+@app.route('/recipe/', methods=['POST', 'GET'])
 def recipe():
-    import pdb; pdb.set_trace()
-    path = request.GET.get('recipe_path')
+    path = request.args.get('recipe_path')
+    if request.method == 'POST':
+      print("Got button press!")
+      if request.form.get('add_to_recipe') == 'add':
+        # add this recipe to the shopping_list
+        add_to_shoppinglist(path)
+        
+    else:
+      path = request.args.get('recipe_path')
+
     recipe = Recipe(path)
     ingredients = []
     for item in recipe.ingredients:
       ingredients.append(f'{item["name"]} {item["quantity"]}{item["units"]}')
-    for item in recipe.steps:
-      import pdb; pdb.set_trace()
-    return render_template('recipe.html', path=path, metadata=metadata, ingredients=ingredients, steps=steps)
+#    for item in recipe.steps:
+#      import pdb; pdb.set_trace()
+#      print(item)
+    return render_template('recipe.html', path=path, metadata=recipe.metadata, ingredients=ingredients, steps=recipe.steps)
 
 
 def main(path):

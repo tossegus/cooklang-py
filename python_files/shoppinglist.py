@@ -16,6 +16,9 @@ class ShoppingList():
         print()
         print(self.__str__)
 
+    @property
+    def items(self):
+      return self.shopping_list
     def add_recipe(self, recipe):
         self.fill_ingredients(recipe)
 
