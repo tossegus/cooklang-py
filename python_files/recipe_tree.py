@@ -70,9 +70,7 @@ class RecipeTree:
             if folder not in self.tree:
                 self._tree[folder] = [RecipeFile(file_name, path + os.sep + file_name)]
             elif not self.tree[folder]:
-                self._tree[folder] = [
-                    RecipeFile(file_name, path + os.sep + file_name)
-                ]
+                self._tree[folder] = [RecipeFile(file_name, path + os.sep + file_name)]
             else:
                 self._tree[folder].append(
                     RecipeFile(file_name, path + os.sep + file_name)

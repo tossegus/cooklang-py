@@ -51,8 +51,7 @@ def shoppinglist():
     """
     if request.method == "POST":
         print("Handle post")
-        url = request.form.get("button")
-        if url in shopping_list:
+        if (url := request.form.get("button")) in shopping_list:
             shopping_list.remove(url)
 
     int_dict = {}
@@ -115,8 +114,7 @@ def recipe():
     step_list = int_recipe.steps_str.split("\n")
     step_dict = {}
     for item in step_list:
-        match = re.search("[^ ]", item)
-        if match:
+        if match := re.search("[^ ]", item):
             index = match.start()
         else:
             index = 0

@@ -24,15 +24,12 @@ class Recipe:
     def __str__(self):
         """Printable class"""
         string = ""
-        tmp_str = self.get_metadata_str()
-        if tmp_str != "":
-            string = string + "\nMetadata:\n" + tmp_str + "\n"
-        tmp_str = self.get_ingredients_str()
-        if tmp_str != "":
-            string = string + "\nIngredients:\n" + tmp_str + "\n"
-        tmp_str = self.get_steps_str()
-        if tmp_str != "":
-            string = string + "\nSteps\n" + tmp_str + "\n"
+        if (meta_str := self.get_metadata_str()) != "":
+            string = string + "\nMetadata:\n" + meta_str + "\n"
+        if (ingredients_str := self.get_ingredients_str()) != "":
+            string = string + "\nIngredients:\n" + ingredients_str + "\n"
+        if (steps_str := self.get_steps_str()) != "":
+            string = string + "\nSteps\n" + steps_str + "\n"
         return string
 
     @property
@@ -129,8 +126,7 @@ class Recipe:
                         # type of writing is to be expected
                         # "mix [...] with a #blender, allow to settle"
                         text.append(sub_step["name"])
-                        quantity = sub_step.get("quantity", None)
-                        if quantity:
+                        if quantity := sub_step.get("quantity", None):
                             cookware.append(
                                 f'{sub_step["name"].strip(",")}: {quantity}'
                             )

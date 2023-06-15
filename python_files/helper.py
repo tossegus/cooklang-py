@@ -11,8 +11,7 @@ RecipeFile = namedtuple("RecipeFile", "file path")
 
 def convert_str_to_int(string):
     """Input a string (50.000) for instance. Return integer 50"""
-    match = re.match(r"(?P<match>.*)[\.]", string)
-    if match:
+    if match := re.match(r"(?P<match>.*)[\.]", string):
         # This is some ugly washing of str -> float -> int via regex.
         quantity = match.group("match")
     else:
