@@ -3,6 +3,7 @@ from server import Server
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from cooklang import parseRecipe
+import os
 
 server_item = None
 shopping_list = []
@@ -29,25 +30,52 @@ def seed():
     pprint(recipe_tree)
     return render_template('seed.html', recipe_tree=recipe_tree)
 
-@app.route('/shoppinglist/')
+@app.route('/shoppinglist/', methods=['POST','GET'])
 def shoppinglist():
-    shoppinglist = ShoppingList()
     global server_item, shopping_list
     if not server_item:
         server_item = Server(os.getcwd())
+
+    # Todo remove this.
+    if not shopping_list:
+      shopping_list=[
+      '/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Buckwheat noodles with fried tofu.cook',
+      '/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Greek salad.cook'
+      ]
+
+    if request.method == 'POST':
+      print('Handle post')
+      url = request.form.get('remove_from_list')
+      import pdb; pdb.set_trace()
+      if url in shopping_list:
+        shopping_list.remove(url)
+     
     if not shopping_list:
       # The shopping_list is empty
       print("Empty list")
     else:
-      print("List is not empty")
+      print("List not empty")
+      int_dict = {}
       for item in shopping_list:
+        filename = os.path.basename(item)
+        int_dict[filename] = item
+      print("List is not empty")
+    return render_template('shopping_list.html', recipes=int_dict)
+
+@app.route('/printshoppinglist/')
+def printshoppinglist():
+    shoppinglist = ShoppingList()
+    import pdb; pdb.set_trace()
+    shoppinglist=['populate', 'this']
+    for item in shopping_list:
         shoppinglist.add_recipe(parseRecipe(item))
 
     shoppinglist.add_recipe(parseRecipe('/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Buckwheat noodles with fried tofu.cook'))
     int_dict = {}
     for item in shoppinglist.items:
       int_dict[item] = f'{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}'
-    return render_template('shopping_list.html', shoppinglist=int_dict)
+
+    return render_template('print_shopping_list.html', shoppinglist=int_dict)
 
 @app.route('/recipe/', methods=['POST', 'GET'])
 def recipe():

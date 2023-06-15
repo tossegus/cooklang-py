@@ -3,5 +3,15 @@
 {% block content %}
 <h1>Shopping List</h1>
 <!-- Add your shopping list content here -->
+{% for item, key in recipes.items() %}
+  <ul>{{item}}
+  <form action="" method="POST">
+    <button name="remove_from_list" value="{{key}}">Remove from list</button name>
+  </form>
+  </ul>
+{% endfor %}
+<div>
+<a href="/printshoppinglist">View ingredients</a>
+</div>
 {% endblock %}
 
