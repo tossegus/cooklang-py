@@ -46,16 +46,16 @@ def shoppinglist():
     if request.method == 'POST':
       print('Handle post')
       url = request.form.get('remove_from_list')
-      import pdb; pdb.set_trace()
       if url in shopping_list:
         shopping_list.remove(url)
      
+    int_dict = {}
+
     if not shopping_list:
       # The shopping_list is empty
       print("Empty list")
     else:
       print("List not empty")
-      int_dict = {}
       for item in shopping_list:
         filename = os.path.basename(item)
         int_dict[filename] = item
@@ -64,13 +64,11 @@ def shoppinglist():
 
 @app.route('/printshoppinglist/')
 def printshoppinglist():
+    global shopping_list
     shoppinglist = ShoppingList()
-    import pdb; pdb.set_trace()
-    shoppinglist=['populate', 'this']
     for item in shopping_list:
         shoppinglist.add_recipe(parseRecipe(item))
 
-    shoppinglist.add_recipe(parseRecipe('/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Buckwheat noodles with fried tofu.cook'))
     int_dict = {}
     for item in shoppinglist.items:
       int_dict[item] = f'{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}'

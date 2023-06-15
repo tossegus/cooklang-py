@@ -31,8 +31,8 @@ class ShoppingList():
         if item not in self.shopping_list:
             self.shopping_list[item] = Ingredient(int_q, int_unit)
         else:
-            current = shopping_list(item)
-            self.shopping_list[item] = Ingredient(current.quantity + int_q, curent.unit)
+            current = self.shopping_list[item]
+            self.shopping_list[item] = Ingredient(current.quantity + int_q, current.unit)
         
     def fill_ingredients(self, recipe):
         for item in recipe['ingredients']:
