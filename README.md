@@ -15,6 +15,7 @@ The following programs are needed:
 * python3.10-devutils
 * pip for pytho3.10
 * python3.10 -m pip install django
+* pip3 install flask
 
 ## Install:
 

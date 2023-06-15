@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+<head>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+{% block content %}
+<h1>Recipe: </h1>
+<button id="runFunctionButton" data-path={{path}}>Add to shopping list</button>
+<h3>Metadata</h3>
+<div>
+{% for item, key in metadata.items %}
+  <ul>{{item}}: {{key}}</ul>
+{% endfor %}
+</div>
+
+<h3>Ingredients</h3>
+<div>
+{% for foo in ingredients %}
+  <ul>
+    {{foo}}
+  </ul>
+{% endfor %}
+</div>
+
+</br></br>
+<h3>Steps</h3>
+<div>{{steps}}</div>
+{% endblock %}
+
+

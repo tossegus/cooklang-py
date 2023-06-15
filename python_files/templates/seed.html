@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Recipes</h2>
+<ul>
+    {% for folder, values in recipe_tree.items() %}
+    <div class="recipe-header">{{ folder }}</div>
+      <div class="recipe-content">
+        {% for item in values %}
+          <div class="recipe-item">
+            <a href="/recipe/?recipe_path={{ item.path }}">{{ item.file }}</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+</ul>
+{% endblock %}
+
