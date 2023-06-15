@@ -36,13 +36,6 @@ def shoppinglist():
     if not server_item:
         server_item = Server(os.getcwd())
 
-    # Todo remove this.
-    if not shopping_list:
-      shopping_list=[
-      '/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Buckwheat noodles with fried tofu.cook',
-      '/home/gustaf/src/cooklang-py/python_files/recipes/Lunch/Greek salad.cook'
-      ]
-
     if request.method == 'POST':
       print('Handle post')
       url = request.form.get('remove_from_list')
@@ -91,10 +84,12 @@ def recipe():
     ingredients = []
     for item in recipe.ingredients:
       ingredients.append(f'{item["name"]} {item["quantity"]}{item["units"]}')
-#    for item in recipe.steps:
-#      import pdb; pdb.set_trace()
-#      print(item)
-    return render_template('recipe.html', path=path, metadata=recipe.metadata, ingredients=ingredients, steps=recipe.steps)
+
+    return render_template('recipe.html',
+                           path=path, 
+                           metadata=recipe.metadata, 
+                           ingredients=ingredients, 
+                           steps=recipe.steps)
 
 
 def main(path):
