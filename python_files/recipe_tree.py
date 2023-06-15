@@ -10,7 +10,9 @@ from helper import RecipeFile
 
 
 class RecipeTree:
-    """RecipeTree parses the working directory and creates an internal structure with all
+    """
+    RecipeTree parses the working directory and creates an
+    internal structure with all
     the .cook files and their paths"""
 
     def __init__(self, path):
@@ -42,7 +44,9 @@ class RecipeTree:
         return self._tree
 
     def __str__(self):
-        """Create a printable version of this class for terminal applications."""
+        """
+        Create a printable version of this class for terminal applications.
+        """
         string = "Recipes:\n"
         for folder in self.tree.items():
             if folder != "Undefined":

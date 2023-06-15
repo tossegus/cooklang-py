@@ -61,7 +61,7 @@ if __name__ == "__main__":
             match sub_cmd:
                 case "read":
                     # Handle read
-                    # There is problems with using % to define units in metadata.
+                    # Using % to define units in metadata is broken.
                     # So don't do that!
                     print(recipe)
                 case _:

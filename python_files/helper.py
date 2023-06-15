@@ -29,8 +29,10 @@ def standardize_time(quantity, unit):
     """Align time units. Input hour or minutes, return minutes"""
     output = ("0", "minutes")
     if not isinstance(quantity, int) and "-" in quantity:
-        # A dash is a sign of ranges. Parsing and combining this would require a split into
-        # lower and higher range. This is not hard, but I don't really want to. I'm tired.
+        # A dash is a sign of ranges.
+        #  Parsing and combining this would require a split into
+        # lower and higher range.
+        # This is not hard, but I don't really want to. I'm tired.
         unit = "NOPE"
     match unit:
         case ("m" | "min" | "minute" | "minutes"):
@@ -75,7 +77,9 @@ def standardize_units(quantity, unit):
 
 def combine_units(units, form):
     """
-    Input g and ml, return a string with smallest amount of measurements.
+    Input g and ml,
+    Return a string with smallest amount of measurements.
+
     Example input: 1250 ml.
     Output: 1l, 2dl, 3tbsp, 1tsp
     """
@@ -130,7 +134,7 @@ def combine_units(units, form):
 # This one should be put into the ShoppingList class
 def merge_ingredients(ingredients_list):
     """
-    Input ingredients list which can contain the same ingredient multiple times.
+    Input ingredients list which can contain duplicate items.
     Output a list where each item is unique, but the previous multiple items
     have been combined (quantityes are summed)
     """

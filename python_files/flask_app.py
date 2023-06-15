@@ -6,13 +6,13 @@ the most relevant page anyway. And who wants a 'Welcome here' page anyway?
 """
 import os
 import re
+from copy import deepcopy
 from flask import Flask, render_template, request
 from datawrapper import DataWrapper
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from helper import convert_str_to_int, RecipeFile
 from cooklang import parseRecipe
-from copy import deepcopy
 
 shopping_list = []
 app = Flask(__name__)
@@ -77,7 +77,10 @@ def shoppinglist():
 
 @app.route("/printshoppinglist/", methods=["POST", "GET"])
 def printshoppinglist():
-    """Displays the items in the shopping list. Only available through Shopping List"""
+    """
+    Displays the items in the shopping list.
+    Only available through Shopping List
+    """
     global shopping_list
     int_shoppinglist = ShoppingList()
     int_dict = {}
@@ -92,9 +95,10 @@ def printshoppinglist():
                 int_shoppinglist.add_recipe(parseRecipe(item))
 
         for item in int_shoppinglist.items:
-            int_dict[
-                item
-            ] = f"{int_shoppinglist.items[item].quantity}{int_shoppinglist.items[item].unit}"
+            int_dict[item] = (
+                f"{int_shoppinglist.items[item].quantity}"
+                + f"{int_shoppinglist.items[item].unit}"
+            )
 
     return render_template("print_shopping_list.html", shoppinglist=int_dict)
 
