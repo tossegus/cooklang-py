@@ -1,10 +1,11 @@
 from flask import Flask, render_template, request
-from server import Server
+from datawrapper import DataWrapper
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from helper import convert_str_to_int
 from cooklang import parseRecipe
-import os, re
+import os
+import re
 
 server_item = None
 shopping_list = []
@@ -26,19 +27,14 @@ def home():
 
 @app.route("/seed/")
 def seed():
-    server_item = Server(os.getcwd())
+    server_item = DataWrapper(os.getcwd())
     recipe_tree = server_item.recipe_tree.tree
-    from pprint import pprint
-
-    pprint(recipe_tree)
     return render_template("seed.html", recipe_tree=recipe_tree)
 
 
 @app.route("/shoppinglist/", methods=["POST", "GET"])
 def shoppinglist():
     global shopping_list
-    server_item = Server(os.getcwd())
-
     if request.method == "POST":
         print("Handle post")
         url = request.form.get("button")
@@ -100,7 +96,7 @@ def recipe():
     step_list = recipe.steps_str.split("\n")
     step_dict = {}
     for item in step_list:
-        m = re.search("[^\ ]", item)
+        m = re.search("[^ ]", item)
         if m:
             index = m.start()
         else:

@@ -1,4 +1,4 @@
-from helper import *
+from helper import standardize_time, convert_str_to_int
 from cooklang import parseRecipe
 
 
@@ -74,7 +74,8 @@ class Recipe:
                 quantity = convert_str_to_int(item["quantity"])
                 string = (
                     string
-                    + f'    {item["name"].ljust(max_len_name, " ")}    {quantity} {item["units"]}\n'
+                    + f'    {item["name"].ljust(max_len_name, " ")}'
+                    + f'    {quantity} {item["units"]}\n'
                 )
             else:
                 # This is unexpected. Log this occurance!
@@ -107,7 +108,8 @@ class Recipe:
                     case "text":
                         text.append(sub_step["value"])
                     case "cookware":
-                        # Strip trailing commas since the followign type of writing is to be expected
+                        # Strip trailing commas since the following
+                        # type of writing is to be expected
                         # "mix [...] with a #blender, allow to settle"
                         text.append(sub_step["name"])
                         quantity = sub_step.get("quantity", None)
@@ -121,7 +123,10 @@ class Recipe:
                         text.append(sub_step["name"])
                         quantity = convert_str_to_int(sub_step["quantity"])
                         ingredient.append(
-                            f'{sub_step["name"].strip(",")}: {quantity} {sub_step["units"]}'
+                            (
+                                f'{sub_step["name"].strip(",")}:'
+                                + f'{quantity} {sub_step["units"]}'
+                            )
                         )
                     case "timer":
                         quantity = convert_str_to_int(sub_step["quantity"])
@@ -141,7 +146,7 @@ class Recipe:
             if ingredient:
                 string = string + f'        [{"; ".join(ingredient)}]\n'
             else:
-                string = string + f"        [-]\n"
+                string = string + "        [-]\n"
             index = index + 1
 
         if time > 0:

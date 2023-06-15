@@ -1,5 +1,5 @@
-from pprint import pprint  # remove this before commit
-import re, math, os
+import re
+import math
 from collections import namedtuple
 
 Ingredient = namedtuple("Ingredient", "quantity unit")
@@ -7,7 +7,7 @@ RecipeFile = namedtuple("RecipeFile", "file path")
 
 
 def convert_str_to_int(string):
-    m = re.match("(?P<match>.*)[\.]", string)
+    m = re.match(r"(?P<match>.*)[\.]", string)
     if m:
         # This is some ugly washing of str -> float -> int via regex.
         quantity = m.group("match")
@@ -16,7 +16,7 @@ def convert_str_to_int(string):
 
     try:
         quantity = int(quantity)
-    except Exception as e:
+    except Exception:
         pass
 
     return quantity

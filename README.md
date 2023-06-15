@@ -17,6 +17,8 @@ The following programs are needed:
 * python3.10 -m pip install django
 * pip3 install flask
 
+The code has been checked with black, flake8, mypy and pylint
+
 ## Install:
 
 
