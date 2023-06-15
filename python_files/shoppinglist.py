@@ -1,11 +1,21 @@
+"""
+File containing ShoppingList class
+
+This class handles the shoppinglist data and allows
+for adding recipes to the shopping list.
+"""
 from helper import combine_units, standardize_units, Ingredient, convert_str_to_int
 
 
 class ShoppingList:
+    """ShoppingList class. Contains shopping_list data."""
+
     def __init__(self):
+        """Creates an empty shopping_list dictionary on creation"""
         self.shopping_list = {}
 
     def __str__(self):
+        """Printable class. Prints the items in the shopping list"""
         string = "Items:\n"
         for item in self.shopping_list:
             elem = self.shopping_list[item]
@@ -13,18 +23,17 @@ class ShoppingList:
             string = string + f"{item}: {new_units}\n"
         return string
 
-    def __repr__(self):
-        print()
-        print(self.__str__)
-
     @property
     def items(self):
+        """Returns the internal shopping list"""
         return self.shopping_list
 
     def add_recipe(self, recipe):
+        """Add a recipe to the shopping list"""
         self.fill_ingredients(recipe)
 
     def add_ingredient(self, item, quantity, unit):
+        """Add ingredients to the shopping list"""
         if unit:
             (int_q, int_unit) = standardize_units(quantity, unit)
         else:
@@ -39,6 +48,7 @@ class ShoppingList:
             )
 
     def fill_ingredients(self, recipe):
+        """Parse the recipe and add ingredients to shopping list"""
         for item in recipe["ingredients"]:
             if item["type"] == "ingredient":
                 quantity = convert_str_to_int(item["quantity"])

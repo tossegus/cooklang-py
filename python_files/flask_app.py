@@ -1,19 +1,24 @@
+"""
+Flask application
+
+The main page just re-directs to /recipes since that is
+the most relevant page anyway. And who wants a 'Welcome here' page anyway?
+"""
+import os
+import re
 from flask import Flask, render_template, request
 from datawrapper import DataWrapper
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from helper import convert_str_to_int
 from cooklang import parseRecipe
-import os
-import re
 
-server_item = None
 shopping_list = []
 app = Flask(__name__)
 
 
 def add_to_shoppinglist(path):
-    global shopping_list
+    """Add chosen recipe to the shopping list"""
     if path not in shopping_list:
         print("Added to list")
         # Only add each recipe once.
@@ -22,19 +27,28 @@ def add_to_shoppinglist(path):
 
 @app.route("/")
 def home():
-    return seed()
+    """Home page. Redirects to recipes page"""
+    return recipes()
 
 
-@app.route("/seed/")
-def seed():
+@app.route("/recipes/")
+def recipes():
+    """
+    Show the recipes page. A lot of data mangling happens here.
+    Accessible via menu bar.
+    """
     server_item = DataWrapper(os.getcwd())
     recipe_tree = server_item.recipe_tree.tree
-    return render_template("seed.html", recipe_tree=recipe_tree)
+    return render_template("recipes.html", recipe_tree=recipe_tree)
 
 
 @app.route("/shoppinglist/", methods=["POST", "GET"])
 def shoppinglist():
-    global shopping_list
+    """
+    Show the Shopping List page. This page is empty if no recipes have
+    been added in recipes view.
+    Accissble via menu bar.
+    """
     if request.method == "POST":
         print("Handle post")
         url = request.form.get("button")
@@ -57,26 +71,31 @@ def shoppinglist():
 
 @app.route("/printshoppinglist/", methods=["POST", "GET"])
 def printshoppinglist():
+    """Displays the items in the shopping list. Only available through Shopping List"""
     global shopping_list
-    shoppinglist = ShoppingList()
+    int_shoppinglist = ShoppingList()
     int_dict = {}
     if request.method == "POST":
         if request.form.get("button") == "empty_list":
             shopping_list = []
     else:
-        for item in shopping_list:
-            shoppinglist.add_recipe(parseRecipe(item))
+        if not shopping_list:
+            print("Shopping list empty")
+        else:
+            for item in shopping_list:
+                int_shoppinglist.add_recipe(parseRecipe(item))
 
-        for item in shoppinglist.items:
+        for item in int_shoppinglist.items:
             int_dict[
                 item
-            ] = f"{shoppinglist.items[item].quantity}{shoppinglist.items[item].unit}"
+            ] = f"{int_shoppinglist.items[item].quantity}{int_shoppinglist.items[item].unit}"
 
     return render_template("print_shopping_list.html", shoppinglist=int_dict)
 
 
 @app.route("/recipe/", methods=["POST", "GET"])
 def recipe():
+    """Recipe page. Show the selected recipe."""
     path = request.args.get("recipe_path")
     if request.method == "POST":
         print("Got button press!")
@@ -87,18 +106,18 @@ def recipe():
     else:
         path = request.args.get("recipe_path")
 
-    recipe = Recipe(path)
+    int_recipe = Recipe(path)
     ingredients = []
-    for item in recipe.ingredients:
+    for item in int_recipe.ingredients:
         quantity = convert_str_to_int(item["quantity"])
         ingredients.append(f'{item["name"]} {quantity}{item["units"]}')
 
-    step_list = recipe.steps_str.split("\n")
+    step_list = int_recipe.steps_str.split("\n")
     step_dict = {}
     for item in step_list:
-        m = re.search("[^ ]", item)
-        if m:
-            index = m.start()
+        match = re.search("[^ ]", item)
+        if match:
+            index = match.start()
         else:
             index = 0
         # Strip leading white spaces
@@ -108,13 +127,14 @@ def recipe():
     return render_template(
         "recipe.html",
         path=path,
-        metadata=recipe.metadata,
+        metadata=int_recipe.metadata,
         ingredients=ingredients,
         steps=step_dict,
     )
 
 
-def main(path):
+def main():
+    """Start the application. Entry point for the flask application"""
     # Start application
     app.run(debug=True)
 

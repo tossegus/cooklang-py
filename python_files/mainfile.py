@@ -1,10 +1,17 @@
 #!/usr/bin/env python
+"""
+Main entry point for the CookCLI python implementation.
 
-from cooklang import parseRecipe
+The terminal version includes a few commands.
+recipe read <file>  - Prints <file>
+seed                - Prints file tree
+server              - Starts the CookCLI webpage
+"""
 import sys
 import os
 
-# from helper import get_ingredients
+from cooklang import parseRecipe
+
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from recipe_tree import RecipeTree
@@ -12,6 +19,7 @@ import flask_app
 
 
 def print_help():
+    """Print usage"""
     print("Usage: mainfile.py [seed|recipe|shopping-list|server] <options>")
     print("seed: <root-path to .cook files>")
     print("recipe: read, ...")
@@ -21,31 +29,31 @@ def print_help():
 
 
 if __name__ == "__main__":
-    command = sys.argv[1]
-    early_exit = False
-    if command not in ["seed", "recipe", "shopping-list", "server"]:
-        print(f'Command "{command}" not found.')
-        early_exit = True
-    if len(sys.argv) < 3 and command != "server" and command != "seed":
+    CMD = sys.argv[1]
+    EARLY_EXIT = False
+    if CMD not in ["seed", "recipe", "shopping-list", "server"]:
+        print(f'Command "{CMD}" not found.')
+        EARLY_EXIT = True
+    if len(sys.argv) < 3 and CMD != "server" and CMD != "seed":
         print("Too few arguments")
-        early_exit = True
-    if early_exit:
+        EARLY_EXIT = True
+    if EARLY_EXIT:
         print()
         print_help()
-        exit(-1)
+        sys.exit(-1)
 
     # Path to this directory
     path = os.getcwd()
 
-    match command:
+    match CMD:
         case "seed":
             tree = RecipeTree(path)
             print(tree)
         case "recipe":
             if len(sys.argv) < 4:
-                print(f"Wrong number of arguments for {command}")
+                print(f"Wrong number of arguments for {CMD}")
                 print_help()
-                exit(-1)
+                sys.exit(-1)
             sub_cmd = sys.argv[2]
 
             recipe = Recipe(sys.argv[3])
@@ -60,11 +68,11 @@ if __name__ == "__main__":
                     print("Everything except read")
         case "shopping-list":
             recipe_paths = []
-            index = 2
-            while index < len(sys.argv):
-                recipe_paths.append(sys.argv[index])
-                index = index + 1
-            print(f"Got {index-2} recipes!")
+            IDX = 2
+            while IDX < len(sys.argv):
+                recipe_paths.append(sys.argv[IDX])
+                IDX += 1
+            print(f"Got {IDX-2} recipes!")
             ingredients = []
             shopping_list = ShoppingList()
             for path in recipe_paths:
@@ -72,4 +80,4 @@ if __name__ == "__main__":
                 shopping_list.add_recipe(recipe)
             print(shopping_list)
         case "server":
-            flask_app.main(path)
+            flask_app.main()

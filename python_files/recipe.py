@@ -1,16 +1,28 @@
+"""
+File containing Recipe class
+
+This class contains data related to recipe.
+"""
+
 from helper import standardize_time, convert_str_to_int
 from cooklang import parseRecipe
 
 
 class Recipe:
+    """Class containing recipe."""
+
     def __init__(self, path):
+        """
+        Parse input recipe and populate internal datastructure.
+        It contains metadata, ingredients and steps.
+        """
         recipe = parseRecipe(path)
         self._metadata = recipe["metadata"]
         self._ingredients = recipe["ingredients"]
         self._steps = recipe["steps"]
-        pass
 
     def __str__(self):
+        """Printable class"""
         string = ""
         tmp_str = self.get_metadata_str()
         if tmp_str != "":
@@ -23,37 +35,40 @@ class Recipe:
             string = string + "\nSteps\n" + tmp_str + "\n"
         return string
 
-    def __repr__(self):
-        return self.__str__
-
     @property
     def metadata(self):
+        """Return internal metadata"""
         return self._metadata
 
     @property
     def metadata_str(self):
+        """Return internal metadata string representation"""
         return self.get_metadata_str()
 
     @property
     def ingredients(self):
+        """Return internal ingredients"""
         return self._ingredients
 
     @property
     def ingredients_str(self):
+        """Return internal ingredients string representation"""
         return self.get_ingredients_str()
 
     @property
     def steps(self):
+        """Return internal steps"""
         return self._steps
 
     @property
     def steps_str(self):
+        """Return internal steps string representation"""
         return self.get_steps_str()
 
     def get_metadata_str(self):
+        """Return a string representation of metadata"""
         if not self._metadata:
             return ""
-        # Print header
         string = ""
 
         for key in self._metadata:
@@ -63,6 +78,7 @@ class Recipe:
         return string[:index]
 
     def get_ingredients_str(self):
+        """Return a string representation of ingredients"""
         if not self.ingredients:
             return ""
         # Print header
@@ -81,7 +97,7 @@ class Recipe:
                 # This is unexpected. Log this occurance!
                 string = string + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
                 string += f'Problem with {item["type"]}'
-                with open("log.log") as file:
+                with open("log.log", encoding="UTF-8") as file:
                     file.write(self.ingredients, encoding="UTF-8")
 
         # Remove the final \n
@@ -90,6 +106,7 @@ class Recipe:
         return string
 
     def get_steps_str(self):
+        """Return a string representation of steps"""
         if not self.steps:
             return ""
 
