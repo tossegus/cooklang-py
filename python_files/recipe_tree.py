@@ -17,13 +17,13 @@ class RecipeTree():
                         self.add_directory(directory)
             if node[2]:
                 # These are files
-                for file in node[2]:
+                for file_name in node[2]:
                     # Find what directory we are in
                     folder = os.path.basename(node[0])
                     if folder == 'recipes':
-                        self.add_file(node[0], file)
+                        self.add_file_to_dir(node[0], 'FLAT', file_name)
                     else:
-                        self.add_file_to_dir(node[0], folder, file)
+                        self.add_file_to_dir(node[0], folder, file_name)
 
   @property
   def tree(self):
@@ -41,7 +41,7 @@ class RecipeTree():
     for folder in self.tree:
         if folder == 'FLAT':
             for node in self.tree[folder]:
-                string = string + f'- {node.file}'
+                string = string + f'- {node.file}\n'
 
     return string
 
@@ -54,18 +54,12 @@ class RecipeTree():
           if folder not in self.tree:
               self._tree[folder] = []
 
-  def add_file(self, path, file):
-      if file not in self.tree:
-          self._tree['FLAT'] = [RecipeFile(file, path + os.sep + file)]
-      else:
-          self._tree['FLAT'].append(RecipeFile(file, path + os.sep + file))
-
-  def add_file_to_dir(self, path, folder, file):
-      if file.endswith('cook'):
+  def add_file_to_dir(self, path, folder, file_name):
+      if file_name.endswith('cook'):
           if folder not in self.tree:
-              self._tree[folder] = [file]
+              self._tree[folder] = [RecipeFile(file_name, path + os.sep + file_name)]
           else:
               if not self.tree[folder]:
-                  self._tree[folder] = [RecipeFile(file, path + os.sep + file)]
+                  self._tree[folder] = [RecipeFile(file_name, path + os.sep + file_name)]
               else:
-                  self._tree[folder].append(RecipeFile(file, path + os.sep + file))
+                  self._tree[folder].append(RecipeFile(file_name, path + os.sep + file_name))
