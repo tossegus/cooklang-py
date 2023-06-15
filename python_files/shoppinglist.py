@@ -1,6 +1,7 @@
 from helper import *
 
-class ShoppingList():
+
+class ShoppingList:
     def __init__(self):
         self.shopping_list = {}
 
@@ -9,16 +10,17 @@ class ShoppingList():
         for item in self.shopping_list:
             elem = self.shopping_list[item]
             new_units = combine_units(elem.quantity, elem.unit)
-            string = string + f'{item}: {new_units}\n'
-        return string 
-        
+            string = string + f"{item}: {new_units}\n"
+        return string
+
     def __repr__(self):
         print()
         print(self.__str__)
 
     @property
     def items(self):
-      return self.shopping_list
+        return self.shopping_list
+
     def add_recipe(self, recipe):
         self.fill_ingredients(recipe)
 
@@ -32,11 +34,12 @@ class ShoppingList():
             self.shopping_list[item] = Ingredient(int_q, int_unit)
         else:
             current = self.shopping_list[item]
-            self.shopping_list[item] = Ingredient(current.quantity + int_q, current.unit)
-        
-    def fill_ingredients(self, recipe):
-        for item in recipe['ingredients']:
-            if item['type'] == 'ingredient':
-                quantity = convert_str_to_int(item['quantity'])
-                self.add_ingredient(item['name'], quantity, item['units'])
+            self.shopping_list[item] = Ingredient(
+                current.quantity + int_q, current.unit
+            )
 
+    def fill_ingredients(self, recipe):
+        for item in recipe["ingredients"]:
+            if item["type"] == "ingredient":
+                quantity = convert_str_to_int(item["quantity"])
+                self.add_ingredient(item["name"], quantity, item["units"])
