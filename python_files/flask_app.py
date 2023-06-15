@@ -10,8 +10,9 @@ from flask import Flask, render_template, request
 from datawrapper import DataWrapper
 from recipe import Recipe
 from shoppinglist import ShoppingList
-from helper import convert_str_to_int
+from helper import convert_str_to_int, RecipeFile
 from cooklang import parseRecipe
+from copy import deepcopy
 
 shopping_list = []
 app = Flask(__name__)
@@ -39,7 +40,13 @@ def recipes():
     """
     server_item = DataWrapper(os.getcwd())
     recipe_tree = server_item.recipe_tree.tree
-    return render_template("recipes.html", recipe_tree=recipe_tree)
+    int_tree = deepcopy(recipe_tree)
+    for item in int_tree:
+        tree_list = []
+        for elem in int_tree[item]:
+            tree_list.append(RecipeFile(elem.file.replace(".cook", ""), elem.path))
+        int_tree[item] = tree_list
+    return render_template("recipes.html", recipe_tree=int_tree)
 
 
 @app.route("/shoppinglist/", methods=["POST", "GET"])
@@ -96,6 +103,7 @@ def printshoppinglist():
 def recipe():
     """Recipe page. Show the selected recipe."""
     path = request.args.get("recipe_path")
+    recipe_name = os.path.basename(path).replace(".cook", "")
     if request.method == "POST":
         print("Got button press!")
         if request.form.get("add_to_recipe") == "add":
@@ -125,6 +133,7 @@ def recipe():
     return render_template(
         "recipe.html",
         path=path,
+        recipe_name=recipe_name,
         metadata=int_recipe.metadata,
         ingredients=ingredients,
         steps=step_dict,

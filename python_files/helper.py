@@ -28,7 +28,7 @@ def convert_str_to_int(string):
 def standardize_time(quantity, unit):
     """Align time units. Input hour or minutes, return minutes"""
     output = ("0", "minutes")
-    if "-" in quantity:
+    if not isinstance(quantity, int) and "-" in quantity:
         # A dash is a sign of ranges. Parsing and combining this would require a split into
         # lower and higher range. This is not hard, but I don't really want to. I'm tired.
         unit = "NOPE"

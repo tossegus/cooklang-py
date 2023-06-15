@@ -32,7 +32,7 @@ class RecipeTree:
                 for file_name in node[2]:
                     # Find what directory we are in
                     if (folder := os.path.basename(node[0])) == "recipes":
-                        self.add_file_to_dir(node[0], "FLAT", file_name)
+                        self.add_file_to_dir(node[0], "Undefined", file_name)
                     else:
                         self.add_file_to_dir(node[0], folder, file_name)
 
@@ -45,14 +45,14 @@ class RecipeTree:
         """Create a printable version of this class for terminal applications."""
         string = "Recipes:\n"
         for folder in self.tree.items():
-            if folder != "FLAT":
+            if folder != "Undefined":
                 string += f"  {folder}\n"
                 for node in self.tree[folder]:
                     string += f"  ├── {node.file}\n"
         index = string.rfind("├")
         string = string[:index] + "└" + string[index + 1 :]
         for folder in self.tree:
-            if folder == "FLAT":
+            if folder == "Undefined":
                 for node in self.tree[folder]:
                     string = string + f"- {node.file}\n"
 
