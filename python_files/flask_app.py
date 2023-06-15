@@ -56,9 +56,12 @@ def shoppinglist():
     been added in recipes view.
     Accissble via menu bar.
     """
+    global shopping_list
     if request.method == "POST":
-        print("Handle post")
-        if (url := request.form.get("button")) in shopping_list:
+        CMD = request.form.get("button")
+        if CMD == "clear_list":
+            shopping_list = []
+        elif url in shopping_list:
             shopping_list.remove(url)
 
     int_dict = {}
