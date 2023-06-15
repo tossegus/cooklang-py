@@ -92,6 +92,7 @@ class Recipe():
         string = ""
         index = 1
         time = 0
+        time_unit = ""
         for step in self.steps:
             text = []
             cookware = []
@@ -117,8 +118,9 @@ class Recipe():
                         ingredient.append(f'{sub_step["name"].strip(",")}: {quantity} {sub_step["units"]}')
                     case 'timer':
                         quantity = convert_str_to_int(sub_step['quantity'])
+                        (quantity, time_unit) = standardize_time(quantity, sub_step["units"])
                         time = time + quantity
-                        text.append(f'{quantity} {sub_step["units"]}')
+                        text.append(f'{quantity} {time_unit}')
                         timer.append((quantity, sub_step['units']))
     
             # Print step
@@ -133,5 +135,7 @@ class Recipe():
                 string = string + f'        [-]\n'
             index = index + 1
 
-        string = string + f'\nEstimated time: {time}\n'
+        if time > 0:
+          string = string + f'\nEstimated time: {time} {time_unit}\n'
+
         return string

@@ -2,7 +2,7 @@
 
 from cooklang import *
 import sys, os
-from helper import get_ingredients
+#from helper import get_ingredients
 from recipe import Recipe
 from shoppinglist import ShoppingList
 from recipe_tree import RecipeTree

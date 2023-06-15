@@ -20,6 +20,16 @@ def convert_str_to_int(string):
 
     return quantity
 
+def standardize_time(quantity, unit):
+   match unit:
+    case ('m'|'min'|'minute'|'minutes'):
+      return (quantity, 'minutes')
+    case ('h'|'hour'|'hours'):
+      return (quantity*60, 'minutes')
+    case _:
+      return ('0', 'minutes')
+
+
 def standardize_units(quantity, unit):
     # This will return unit in ml or g
     match unit:
@@ -118,27 +128,16 @@ def merge_ingredients(ingredients_list):
           ingredients_list[item] = ingredients_list[item][0]
 
 
-def get_ingredients(recipe):
-    ingredients = {}
-    for item in recipe['ingredients']:
-        if item['type'] == 'ingredient':
-            quantity = convert_str_to_int(item['quantity'])
-            name = item['name']
-            if name not in ingredients:
-                ingredients[item['name']] = [(quantity, item['units'])]
-            else:
-                ingredients[item['name']].append((quantity, item['units']))
+#def get_ingredients(recipe):
+#    ingredients = {}
+#    for item in recipe['ingredients']:
+#        if item['type'] == 'ingredient':
+#            quantity = convert_str_to_int(item['quantity'])
+#            name = item['name']
+#            if name not in ingredients:
+#                ingredients[item['name']] = [(quantity, item['units'])]
+#            else:
+#                ingredients[item['name']].append((quantity, item['units']))
+#
+#    return merge_ingredients(ingredients)
 
-    return merge_ingredients(ingredients)
-
-
-class CookCLI():
-  def __init__(self):
-    # Do something
-    print("Hej")
-  def __enter(self):
-    # If you want to use a contextmanager style
-    print("Hej")
-  def __exit__(self):
-    # If you want to use a contextmanager style
-    print("Hej")

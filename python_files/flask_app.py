@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from server import Server
 from recipe import Recipe
 from shoppinglist import ShoppingList
+from helper import convert_str_to_int
 from cooklang import parseRecipe
 import os, re
 
@@ -22,9 +23,7 @@ def home():
 
 @app.route('/seed/')
 def seed():
-    global server_item
-    if not server_item:
-      server_item = Server(os.getcwd())
+    server_item = Server(os.getcwd())
     recipe_tree = server_item.recipe_tree.tree
     from pprint import pprint
     pprint(recipe_tree)
@@ -32,9 +31,8 @@ def seed():
 
 @app.route('/shoppinglist/', methods=['POST','GET'])
 def shoppinglist():
-    global server_item, shopping_list
-    if not server_item:
-        server_item = Server(os.getcwd())
+    global shopping_list
+    server_item = Server(os.getcwd())
 
     if request.method == 'POST':
       print('Handle post')
@@ -87,7 +85,8 @@ def recipe():
     recipe = Recipe(path)
     ingredients = []
     for item in recipe.ingredients:
-      ingredients.append(f'{item["name"]} {item["quantity"]}{item["units"]}')
+      quantity = convert_str_to_int(item["quantity"])
+      ingredients.append(f'{item["name"]} {quantity}{item["units"]}')
 
     step_list = recipe.steps_str.split('\n')
     step_dict = {}
@@ -107,17 +106,12 @@ def recipe():
                            ingredients=ingredients, 
                            steps=step_dict)
 
-def main(path):
-    global server_item
-    if not server_item:
-      server_item = Server(path)
-      print("Server setup!")
 
+def main(path):
     # Start application
     app.run(debug=True)
 
+
 if __name__ == '__main__':
-    # Running interactively
-    print("HELLO!")
-    main(os.getcwd())
+    main()
 
