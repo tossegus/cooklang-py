@@ -18,7 +18,7 @@ def add_to_shoppinglist(path):
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    return seed()
 
 @app.route('/seed/')
 def seed():
@@ -106,7 +106,6 @@ def recipe():
                            metadata=recipe.metadata, 
                            ingredients=ingredients, 
                            steps=step_dict)
-
 
 def main(path):
     global server_item
