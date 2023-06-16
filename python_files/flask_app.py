@@ -11,7 +11,7 @@ from flask import Flask, render_template, request
 from datawrapper import DataWrapper
 from recipe import Recipe
 from shoppinglist import ShoppingList
-from helper import convert_str_to_int, RecipeFile
+from helper import convert_str_to_float, RecipeFile
 from cooklang import parseRecipe
 
 shopping_list = []
@@ -61,8 +61,8 @@ def shoppinglist():
         CMD = request.form.get("button")
         if CMD == "clear_list":
             shopping_list = []
-        elif url in shopping_list:
-            shopping_list.remove(url)
+        elif CMD in shopping_list:
+            shopping_list.remove(CMD)
 
     int_dict = {}
 
@@ -123,7 +123,7 @@ def recipe():
     int_recipe = Recipe(path)
     ingredients = []
     for item in int_recipe.ingredients:
-        quantity = convert_str_to_int(item["quantity"])
+        quantity = convert_str_to_float(item["quantity"])
         ingredients.append(f'{item["name"]} {quantity}{item["units"]}')
 
     step_list = int_recipe.steps_str.split("\n")

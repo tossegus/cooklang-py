@@ -4,7 +4,7 @@ File containing Recipe class
 This class contains data related to recipe.
 """
 
-from helper import standardize_time, convert_str_to_int
+from helper import standardize_time, convert_str_to_float
 from cooklang import parseRecipe
 
 
@@ -84,7 +84,7 @@ class Recipe:
         max_len_name = max([len(item["name"]) for item in self.ingredients])
         for item in self.ingredients:
             if item["type"] == "ingredient":
-                quantity = convert_str_to_int(item["quantity"])
+                quantity = convert_str_to_float(item["quantity"])
                 string = (
                     string
                     + f'    {item["name"].ljust(max_len_name, " ")}'
@@ -134,7 +134,7 @@ class Recipe:
                             cookware.append(sub_step["name"].strip(","))
                     case "ingredient":
                         text.append(sub_step["name"])
-                        quantity = convert_str_to_int(sub_step["quantity"])
+                        quantity = convert_str_to_float(sub_step["quantity"])
                         ingredient.append(
                             (
                                 f'{sub_step["name"].strip(",")}:'
@@ -142,7 +142,7 @@ class Recipe:
                             )
                         )
                     case "timer":
-                        quantity = convert_str_to_int(sub_step["quantity"])
+                        quantity = convert_str_to_float(sub_step["quantity"])
                         (quantity, time_unit) = standardize_time(
                             quantity, sub_step["units"]
                         )

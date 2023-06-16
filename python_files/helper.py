@@ -1,7 +1,6 @@
 """
 File containing helper functions.
 """
-import re
 import math
 from collections import namedtuple
 
@@ -9,18 +8,12 @@ Ingredient = namedtuple("Ingredient", "quantity unit")
 RecipeFile = namedtuple("RecipeFile", "file path")
 
 
-def convert_str_to_int(string):
+def convert_str_to_float(string):
     """Input a string (50.000) for instance. Return integer 50"""
-    if match := re.match(r"(?P<match>.*)[\.]", string):
-        # This is some ugly washing of str -> float -> int via regex.
-        quantity = match.group("match")
-    else:
-        quantity = string
-
     try:
-        quantity = int(quantity)
+        quantity = float(string)
     except ValueError:
-        pass
+        quantity = 0.0
 
     return quantity
 
@@ -28,7 +21,7 @@ def convert_str_to_int(string):
 def standardize_time(quantity, unit):
     """Align time units. Input hour or minutes, return minutes"""
     output = ("0", "minutes")
-    if not isinstance(quantity, int) and "-" in quantity:
+    if not isinstance(quantity, float) and "-" in quantity:
         # A dash is a sign of ranges.
         #  Parsing and combining this would require a split into
         # lower and higher range.

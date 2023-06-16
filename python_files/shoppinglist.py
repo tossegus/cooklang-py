@@ -4,7 +4,7 @@ File containing ShoppingList class
 This class handles the shoppinglist data and allows
 for adding recipes to the shopping list.
 """
-from helper import combine_units, standardize_units, Ingredient, convert_str_to_int
+from helper import combine_units, standardize_units, Ingredient, convert_str_to_float
 
 
 class ShoppingList:
@@ -51,5 +51,5 @@ class ShoppingList:
         """Parse the recipe and add ingredients to shopping list"""
         for item in recipe["ingredients"]:
             if item["type"] == "ingredient":
-                quantity = convert_str_to_int(item["quantity"])
+                quantity = convert_str_to_float(item["quantity"])
                 self.add_ingredient(item["name"], quantity, item["units"])
