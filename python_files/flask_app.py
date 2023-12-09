@@ -112,7 +112,6 @@ def recipe():
     path = request.args.get("recipe_path")
     recipe_name = os.path.basename(path).replace(".cook", "")
     if request.method == "POST":
-        print("Got button press!")
         if request.form.get("add_to_recipe") == "add":
             # add this recipe to the shopping_list
             add_to_shoppinglist(path)
@@ -154,6 +153,7 @@ def recipe():
         metadata=int_recipe.metadata,
         ingredients=ingredients,
         steps=step_dict,
+        scale_factor=factor,
     )
 
 
